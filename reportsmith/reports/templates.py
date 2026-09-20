@@ -501,8 +501,7 @@ def render_report_from_finding(
         Data dict ready for render_report().
     """
     try:  # full maps live in the monorepo; standalone uses faithful copies
-        from cores.evidence.composer import CVSS_SEVERITY_MAP  # noqa: N806
-        from cores.evidence.composer import CWE_MAP  # noqa: N806
+        from cores.evidence.composer import CVSS_SEVERITY_MAP, CWE_MAP  # noqa: N806
     except ImportError:  # pragma: no cover - standalone path
         CVSS_SEVERITY_MAP = {  # noqa: N806
             "critical": (9.5, "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"),
