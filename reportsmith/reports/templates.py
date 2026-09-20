@@ -501,16 +501,16 @@ def render_report_from_finding(
         Data dict ready for render_report().
     """
     try:  # full maps live in the monorepo; standalone uses faithful copies
-        from cores.evidence.composer import CVSS_SEVERITY_MAP as cvss_map
-        from cores.evidence.composer import CWE_MAP as cwe_map
+        from cores.evidence.composer import CVSS_SEVERITY_MAP  # noqa: N806
+        from cores.evidence.composer import CWE_MAP  # noqa: N806
     except ImportError:  # pragma: no cover - standalone path
-        cvss_map = {
+        CVSS_SEVERITY_MAP = {  # noqa: N806
             "critical": (9.5, "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"),
             "high": (7.5, "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N"),
             "medium": (5.5, "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"),
             "low": (3.5, "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N"),
         }
-        cwe_map = {
+        CWE_MAP = {  # noqa: N806
             "idor": ("CWE-639", "Authorization Bypass Through User-Controlled Key"),
             "ssrf": ("CWE-918", "Server-Side Request Forgery"),
             "auth_bypass": ("CWE-288", "Authentication Bypass Using an Alternate Path or Channel"),
@@ -519,8 +519,8 @@ def render_report_from_finding(
             "generic": ("CWE-200", "Exposure of Sensitive Information to an Unauthorized Actor"),
         }
 
-    cvss_data = cvss_map.get(finding.get("severity", "medium"), (0.0, ""))
-    cwe_data = cwe_map.get(finding.get("vulnerability_type", ""), ("", ""))
+    cvss_data = CVSS_SEVERITY_MAP.get(finding.get("severity", "medium"), (0.0, ""))
+    cwe_data = CWE_MAP.get(finding.get("vulnerability_type", ""), ("", ""))
 
     data: dict[str, Any] = {
         "title": finding.get("title") or f"Finding #{finding.get('id', '')}",
